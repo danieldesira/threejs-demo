@@ -90,7 +90,7 @@ export function Cube() {
           <Slider
             label="Scale Y (Height)"
             id="scale-y"
-            onChange={eventHandlers.rotateY}
+            onChange={eventHandlers.scaleY}
           />
           <Slider
             label="Scale Z (Depth)"
