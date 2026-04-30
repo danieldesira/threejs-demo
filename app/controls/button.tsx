@@ -7,7 +7,8 @@ export function Button({ label, clickHandler }: Props) {
   return (
     <button
       type={clickHandler ? "button" : "submit"}
-      className="rounded bg-blue-500 px-4 py-2 text-white"
+      role="button"
+      className="rounded bg-blue-500 hover:bg-blue-600 transition-colors px-4 py-2 text-white cursor-pointer"
       onClick={clickHandler}
     >
       {label}

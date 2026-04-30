@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import type { Route } from "./+types/home";
 import { Cube } from "~/cube/cube";
+import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,5 +11,13 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("isLoggedIn")) {
+      navigate("/login");
+    }
+  }, []);
+
   return <Cube />;
 }

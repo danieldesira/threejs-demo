@@ -1,5 +1,9 @@
 import { useEffect, useRef } from "react";
-import { createCube, setupSceneAndCamera } from "./rendering";
+import {
+  createCube,
+  setupSceneAndCamera,
+  type CubeOutlineValues,
+} from "./rendering";
 import { Dropdown } from "~/controls/dropdown";
 import * as THREE from "three";
 import { Button } from "~/controls/button";
@@ -7,14 +11,19 @@ import { Slider } from "~/controls/slider";
 
 export function Cube() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const cubeRef = useRef<THREE.Mesh>(null);
+  const controlContainerRef = useRef<HTMLDivElement>(null);
+  const cubeOutlineRef = useRef<CubeOutlineValues>(null);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && controlContainerRef.current) {
       const { scene, camera, renderer } = setupSceneAndCamera(
         containerRef.current,
+        {
+          width: window.innerWidth - controlContainerRef.current?.clientWidth,
+          height: window.innerHeight,
+        },
       );
-      cubeRef.current = createCube(scene, camera);
+      cubeOutlineRef.current = createCube(scene, camera);
 
       const animate = () => {
         renderer.render(scene, camera);
@@ -22,38 +31,44 @@ export function Cube() {
 
       renderer.setAnimationLoop(animate);
     }
-  }, [containerRef]);
+  }, [containerRef, controlContainerRef]);
 
   const eventHandlers = {
     handleColorChange(option: string) {
-      const material = cubeRef.current?.material as THREE.MeshStandardMaterial;
-      material.color.set(new THREE.Color(parseInt(option, 16)));
+      const cubeMaterial = cubeOutlineRef.current?.cube.material!;
+      cubeMaterial.color.set(new THREE.Color(parseInt(option, 16)));
     },
     rotateX() {
-      cubeRef.current?.rotateX(0.1);
+      cubeOutlineRef.current?.cube.rotateX(0.1);
+      cubeOutlineRef.current?.outline.rotateX(0.1);
     },
     rotateY() {
-      cubeRef.current?.rotateY(0.1);
+      cubeOutlineRef.current?.cube.rotateY(0.1);
+      cubeOutlineRef.current?.outline.rotateY(0.1);
     },
     rotateZ() {
-      cubeRef.current?.rotateY(0.1);
+      cubeOutlineRef.current?.cube.rotateZ(0.1);
+      cubeOutlineRef.current?.outline.rotateZ(0.1);
     },
     scaleX(value: number) {
-      cubeRef.current?.scale.setX(value);
+      cubeOutlineRef.current?.cube.scale.setX(value);
+      cubeOutlineRef.current?.outline.scale.setX(value);
     },
     scaleY(value: number) {
-      cubeRef.current?.scale.setY(value);
+      cubeOutlineRef.current?.cube.scale.setY(value);
+      cubeOutlineRef.current?.outline.scale.setY(value);
     },
     scaleZ(value: number) {
-      cubeRef.current?.scale.setZ(value);
+      cubeOutlineRef.current?.cube.scale.setZ(value);
+      cubeOutlineRef.current?.outline.scale.setZ(value);
     },
   };
 
   return (
-    <div className="flex flex-col gap-2 p-5">
+    <div className="flex flex-col gap-2">
       <header className="text-2xl font-bold">Cube</header>
       <div ref={containerRef} className="flex gap-1">
-        <div className="flex flex-col gap-2">
+        <div ref={controlContainerRef} className="flex flex-col gap-2 p-5">
           <Dropdown
             label="Color"
             id="color-dropdown"

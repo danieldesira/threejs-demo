@@ -3,11 +3,15 @@ import { Button } from "~/controls/button";
 import { TextInput } from "~/controls/text-input";
 import type { ActionFunctionArgs } from "react-router";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const clientAction = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  if (email === "admin@example.com" && password === "admin") {
+  if (
+    email === import.meta.env.VITE_LOGIN_EMAIL &&
+    password === import.meta.env.VITE_LOGIN_PASSWORD
+  ) {
+    sessionStorage.setItem("isLoggedIn", true.toString());
     return redirect("/");
   }
 };
