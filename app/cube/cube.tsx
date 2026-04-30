@@ -1,7 +1,8 @@
-import { useEffect, useRef, type ChangeEvent } from "react";
+import { useEffect, useRef } from "react";
 import { createCube, setupSceneAndCamera } from "./rendering";
 import { Dropdown } from "~/controls/dropdown";
 import * as THREE from "three";
+import { Button } from "~/controls/button";
 
 export function Cube() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,10 +31,10 @@ export function Cube() {
   return (
     <div className="flex flex-col gap-2 p-5">
       <header className="text-2xl font-bold">Cube</header>
-      <div ref={containerRef} className="flex flex-col gap-1">
+      <div ref={containerRef} className="flex gap-1">
         <div className="flex flex-wrap gap-2">
           <Dropdown
-            label="Change Color"
+            label="Color"
             id="color-dropdown"
             options={[
               { value: "0x00ff00", label: "Green" },
@@ -41,6 +42,18 @@ export function Cube() {
               { value: "0x0000ff", label: "Blue" },
             ]}
             onSelect={handleColorChange}
+          />
+          <Button
+            label="Rotate X"
+            clickHandler={() => cubeRef.current?.rotateX(0.1)}
+          />
+          <Button
+            label="Rotate Y"
+            clickHandler={() => cubeRef.current?.rotateY(0.1)}
+          />
+          <Button
+            label="Rotate Z"
+            clickHandler={() => cubeRef.current?.rotateZ(0.1)}
           />
         </div>
       </div>
