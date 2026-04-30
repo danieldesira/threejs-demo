@@ -30,10 +30,23 @@ export function Cube() {
       };
 
       renderer.setAnimationLoop(animate);
+
+      const resize = () => {
+        const width =
+          window.innerWidth - (controlContainerRef.current?.clientWidth ?? 0);
+        const height = window.innerHeight;
+        renderer.setSize(width, height);
+      };
+
+      window.addEventListener("resize", resize);
+
+      return () => {
+        window.removeEventListener("resize", resize);
+      };
     }
   }, []);
 
-  const eventHandlers = {
+  const controlHandlers = {
     handleColorChange(option: string) {
       const cubeMaterial = cubeOutlineRef.current?.cube.material!;
       cubeMaterial.color.set(new THREE.Color(parseInt(option, 16)));
@@ -77,25 +90,25 @@ export function Cube() {
               { value: "0xff0000", label: "Red" },
               { value: "0x0000ff", label: "Blue" },
             ]}
-            onSelect={eventHandlers.handleColorChange}
+            onSelect={controlHandlers.handleColorChange}
           />
-          <Button label="Rotate X" clickHandler={eventHandlers.rotateX} />
-          <Button label="Rotate Y" clickHandler={eventHandlers.rotateY} />
-          <Button label="Rotate Z" clickHandler={eventHandlers.rotateZ} />
+          <Button label="Rotate X" clickHandler={controlHandlers.rotateX} />
+          <Button label="Rotate Y" clickHandler={controlHandlers.rotateY} />
+          <Button label="Rotate Z" clickHandler={controlHandlers.rotateZ} />
           <Slider
             label="Scale X (Width)"
             id="scale-x"
-            onChange={eventHandlers.scaleX}
+            onChange={controlHandlers.scaleX}
           />
           <Slider
             label="Scale Y (Height)"
             id="scale-y"
-            onChange={eventHandlers.scaleY}
+            onChange={controlHandlers.scaleY}
           />
           <Slider
             label="Scale Z (Depth)"
             id="scale-z"
-            onChange={eventHandlers.scaleZ}
+            onChange={controlHandlers.scaleZ}
           />
         </div>
       </div>
