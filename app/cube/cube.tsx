@@ -31,7 +31,7 @@ export function Cube() {
 
       renderer.setAnimationLoop(animate);
     }
-  }, [containerRef, controlContainerRef]);
+  }, []);
 
   const eventHandlers = {
     handleColorChange(option: string) {
@@ -65,10 +65,10 @@ export function Cube() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <header className="text-2xl font-bold">Cube</header>
-      <div ref={containerRef} className="flex gap-1">
-        <div ref={controlContainerRef} className="flex flex-col gap-2 p-5">
+    <div ref={containerRef} className="flex gap-1">
+      <div ref={controlContainerRef} className="flex flex-col gap-5 p-5">
+        <header className="text-2xl font-bold">Cube</header>
+        <div ref={controlContainerRef} className="flex flex-col gap-2">
           <Dropdown
             label="Color"
             id="color-dropdown"
