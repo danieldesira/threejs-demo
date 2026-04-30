@@ -7,8 +7,12 @@ type Props = {
 export function Slider({ label, id, onChange }: Props) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className="font-bold text-sm">
+        {label}
+      </label>
       <input
+        id={id}
+        className="py-2 px-4"
         type="range"
         min="1"
         max="10"
