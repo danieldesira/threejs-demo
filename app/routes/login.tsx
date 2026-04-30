@@ -1,0 +1,26 @@
+import { Form, redirect } from "react-router";
+import { Button } from "~/controls/button";
+import { TextInput } from "~/controls/text-input";
+import type { ActionFunctionArgs } from "react-router";
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const password = formData.get("password");
+  if (email === "admin@example.com" && password === "admin") {
+    return redirect("/");
+  }
+};
+
+export default function Login() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-5">
+      <header className="text-2xl font-bold">Login</header>
+      <Form method="post" action="" className="flex flex-col gap-2">
+        <TextInput label="Email" id="email" type="email" />
+        <TextInput label="Password" id="password" type="password" />
+        <Button label="Login" />
+      </Form>
+    </div>
+  );
+}
