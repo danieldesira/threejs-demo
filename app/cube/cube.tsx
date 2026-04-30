@@ -24,9 +24,29 @@ export function Cube() {
     }
   }, [containerRef]);
 
-  const handleColorChange = (option: string) => {
-    const material = cubeRef.current?.material as THREE.MeshStandardMaterial;
-    material.color.set(new THREE.Color(parseInt(option, 16)));
+  const eventHandlers = {
+    handleColorChange(option: string) {
+      const material = cubeRef.current?.material as THREE.MeshStandardMaterial;
+      material.color.set(new THREE.Color(parseInt(option, 16)));
+    },
+    rotateX() {
+      cubeRef.current?.rotateX(0.1);
+    },
+    rotateY() {
+      cubeRef.current?.rotateY(0.1);
+    },
+    rotateZ() {
+      cubeRef.current?.rotateY(0.1);
+    },
+    scaleX(value: number) {
+      cubeRef.current?.scale.setX(value);
+    },
+    scaleY(value: number) {
+      cubeRef.current?.scale.setY(value);
+    },
+    scaleZ(value: number) {
+      cubeRef.current?.scale.setZ(value);
+    },
   };
 
   return (
@@ -42,34 +62,25 @@ export function Cube() {
               { value: "0xff0000", label: "Red" },
               { value: "0x0000ff", label: "Blue" },
             ]}
-            onSelect={handleColorChange}
+            onSelect={eventHandlers.handleColorChange}
           />
-          <Button
-            label="Rotate X"
-            clickHandler={() => cubeRef.current?.rotateX(0.1)}
-          />
-          <Button
-            label="Rotate Y"
-            clickHandler={() => cubeRef.current?.rotateY(0.1)}
-          />
-          <Button
-            label="Rotate Z"
-            clickHandler={() => cubeRef.current?.rotateZ(0.1)}
-          />
+          <Button label="Rotate X" clickHandler={eventHandlers.rotateX} />
+          <Button label="Rotate Y" clickHandler={eventHandlers.rotateY} />
+          <Button label="Rotate Z" clickHandler={eventHandlers.rotateZ} />
           <Slider
-            label="Scale X"
+            label="Scale X (Width)"
             id="scale-x"
-            onChange={(value) => cubeRef.current?.scale.setX(value)}
+            onChange={eventHandlers.scaleX}
           />
           <Slider
-            label="Scale Y"
+            label="Scale Y (Height)"
             id="scale-y"
-            onChange={(value) => cubeRef.current?.scale.setY(value)}
+            onChange={eventHandlers.rotateY}
           />
           <Slider
-            label="Scale Z"
+            label="Scale Z (Depth)"
             id="scale-z"
-            onChange={(value) => cubeRef.current?.scale.setZ(value)}
+            onChange={eventHandlers.scaleZ}
           />
         </div>
       </div>
