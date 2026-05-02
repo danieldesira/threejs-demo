@@ -2,16 +2,19 @@ import { Form, redirect } from "react-router";
 import { Button } from "~/controls/button";
 import { TextInput } from "~/controls/text-input";
 import type { ActionFunctionArgs } from "react-router";
+import useAuthenticationStore from "~/store";
 
 export const clientAction = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const email = formData.get("email");
-  const password = formData.get("password");
+  const email = formData.get("email")?.toString();
+  const password = formData.get("password")?.toString();
   if (
     email === import.meta.env.VITE_LOGIN_EMAIL &&
     password === import.meta.env.VITE_LOGIN_PASSWORD
   ) {
-    sessionStorage.setItem("isLoggedIn", true.toString());
+    useAuthenticationStore
+      .getState()
+      .setAuthModel({ token: "", userEmail: email ?? "" });
     return redirect("/");
   }
 };
