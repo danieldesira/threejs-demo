@@ -1,3 +1,5 @@
+import { InputField } from "./input-field";
+
 type DropdownProps = {
   label: string;
   id: string;
@@ -7,10 +9,7 @@ type DropdownProps = {
 
 export function Dropdown({ label, id, options, onSelect }: DropdownProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="font-bold text-sm">
-        {label}
-      </label>
+    <InputField id={id} label={label}>
       <select
         id={id}
         onChange={(e) => onSelect(e.currentTarget.value)}
@@ -22,6 +21,6 @@ export function Dropdown({ label, id, options, onSelect }: DropdownProps) {
           </option>
         ))}
       </select>
-    </div>
+    </InputField>
   );
 }

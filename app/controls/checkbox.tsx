@@ -1,3 +1,5 @@
+import { InputField } from "./input-field";
+
 type Props = {
   label: string;
   id: string;
@@ -7,10 +9,7 @@ type Props = {
 
 export function Checkbox({ label, id, onChange, defaultChecked }: Props) {
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="font-bold text-sm">
-        {label}
-      </label>
+    <InputField id={id} label={label}>
       <input
         id={id}
         name={id}
@@ -19,6 +18,6 @@ export function Checkbox({ label, id, onChange, defaultChecked }: Props) {
         onChange={(e) => onChange(e.currentTarget.checked)}
         defaultChecked={defaultChecked}
       />
-    </div>
+    </InputField>
   );
 }

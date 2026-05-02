@@ -1,3 +1,5 @@
+import { InputField } from "./input-field";
+
 type Props = {
   label: string;
   id: string;
@@ -6,10 +8,7 @@ type Props = {
 
 export function Slider({ label, id, onChange }: Props) {
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="font-bold text-sm">
-        {label}
-      </label>
+    <InputField id={id} label={label}>
       <input
         id={id}
         className="py-2 px-4"
@@ -19,6 +18,6 @@ export function Slider({ label, id, onChange }: Props) {
         defaultValue={1}
         onChange={(e) => onChange(parseInt(e.currentTarget.value))}
       />
-    </div>
+    </InputField>
   );
 }
