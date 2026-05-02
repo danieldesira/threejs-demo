@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   createCube,
   setupSceneAndCamera,
@@ -8,11 +8,13 @@ import { Dropdown } from "~/controls/dropdown";
 import * as THREE from "three";
 import { Button } from "~/controls/button";
 import { Slider } from "~/controls/slider";
+import { Checkbox } from "~/controls/checkbox";
 
 export function Cube() {
   const containerRef = useRef<HTMLDivElement>(null);
   const controlContainerRef = useRef<HTMLDivElement>(null);
   const cubeOutlineRef = useRef<CubeOutlineValues>(null);
+  const [color, setColor] = useState("0x00ff00");
 
   useEffect(() => {
     if (containerRef.current && controlContainerRef.current) {
@@ -50,6 +52,7 @@ export function Cube() {
     handleColorChange(option: string) {
       const cubeMaterial = cubeOutlineRef.current?.cube.material!;
       cubeMaterial.color.set(new THREE.Color(parseInt(option, 16)));
+      setColor(option);
     },
     rotateX() {
       cubeOutlineRef.current?.cube.rotateX(0.1);
@@ -74,6 +77,14 @@ export function Cube() {
     scaleZ(value: number) {
       cubeOutlineRef.current?.cube.scale.setZ(value);
       cubeOutlineRef.current?.outline.scale.setZ(value);
+    },
+    showHideOutline(checked: boolean) {
+      const outlineMaterial = cubeOutlineRef.current?.outline.material!;
+      if (checked) {
+        outlineMaterial.color.set(new THREE.Color(parseInt("0x000000", 16)));
+      } else {
+        outlineMaterial.color.set(new THREE.Color(parseInt(color, 16)));
+      }
     },
   };
 
@@ -109,6 +120,12 @@ export function Cube() {
             label="Scale Z (Depth)"
             id="scale-z"
             onChange={controlHandlers.scaleZ}
+          />
+          <Checkbox
+            label="Show outline"
+            id="show-outline"
+            onChange={controlHandlers.showHideOutline}
+            defaultChecked
           />
         </div>
       </div>
