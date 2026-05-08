@@ -1,5 +1,7 @@
 import * as THREE from "three";
 
+export const cameraDistance = 5;
+
 export const setupSceneAndCamera = (
   container: HTMLDivElement | null,
   dimensions: { width: number; height: number },
@@ -35,7 +37,7 @@ export const createCube = (
   scene.add(cube);
   scene.add(outline);
   camera.position.z = 5;
-  return { cube, outline };
+  return { cube, outline, camera };
 };
 
 export type CubeOutlineValues = ReturnType<typeof createCube>;

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  cameraDistance,
   createCube,
   setupSceneAndCamera,
   type CubeOutlineValues,
@@ -55,6 +56,11 @@ export function Cube() {
     };
   }, []);
 
+  const pointCameraAtOrigin = () =>
+    cubeOutlineRef.current?.camera.lookAt(0, 0, 0);
+
+  const calculateCameraAngle = (value: number) => (value / 10) * Math.PI * 2;
+
   const controlHandlers = {
     handleColorChange(option: string) {
       const cubeMaterial = cubeOutlineRef.current?.cube.material!;
@@ -97,6 +103,22 @@ export function Cube() {
       resetAuth();
       navigate("/login");
     },
+    moveCameraX(value: number) {
+      cubeOutlineRef.current?.camera.position.set(
+        Math.cos(calculateCameraAngle(value)) * cameraDistance,
+        0,
+        cameraDistance,
+      );
+      pointCameraAtOrigin();
+    },
+    moveCameraY(value: number) {
+      cubeOutlineRef.current?.camera.position.set(
+        0,
+        Math.sin(calculateCameraAngle(value)) * cameraDistance,
+        cameraDistance,
+      );
+      pointCameraAtOrigin();
+    },
   };
 
   return (
@@ -138,6 +160,16 @@ export function Cube() {
               id="show-outline"
               onChange={controlHandlers.showHideOutline}
               defaultChecked
+            />
+            <Slider
+              label="Move Camera Horizontally"
+              id="camera-x"
+              onChange={controlHandlers.moveCameraX}
+            />
+            <Slider
+              label="Move Camera Vertically"
+              id="camera-y"
+              onChange={controlHandlers.moveCameraY}
             />
           </div>
           <div className="flex flex-col gap-2">
