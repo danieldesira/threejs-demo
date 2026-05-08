@@ -67,18 +67,6 @@ export function Cube() {
       cubeMaterial.color.set(new THREE.Color(parseInt(option, 16)));
       setColor(option);
     },
-    rotateX() {
-      cubeOutlineRef.current?.cube.rotateX(0.1);
-      cubeOutlineRef.current?.outline.rotateX(0.1);
-    },
-    rotateY() {
-      cubeOutlineRef.current?.cube.rotateY(0.1);
-      cubeOutlineRef.current?.outline.rotateY(0.1);
-    },
-    rotateZ() {
-      cubeOutlineRef.current?.cube.rotateZ(0.1);
-      cubeOutlineRef.current?.outline.rotateZ(0.1);
-    },
     scaleX(value: number) {
       cubeOutlineRef.current?.cube.scale.setX(value);
       cubeOutlineRef.current?.outline.scale.setX(value);
@@ -137,9 +125,6 @@ export function Cube() {
               ]}
               onSelect={controlHandlers.handleColorChange}
             />
-            <Button label="Rotate X" clickHandler={controlHandlers.rotateX} />
-            <Button label="Rotate Y" clickHandler={controlHandlers.rotateY} />
-            <Button label="Rotate Z" clickHandler={controlHandlers.rotateZ} />
             <Slider
               label="Scale X (Width)"
               id="scale-x"
