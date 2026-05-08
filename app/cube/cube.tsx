@@ -21,35 +21,38 @@ export function Cube() {
   const resetAuth = useAuthenticationStore((state) => state.reset);
 
   useEffect(() => {
-    if (containerRef.current && controlContainerRef.current) {
-      const { scene, camera, renderer } = setupSceneAndCamera(
-        containerRef.current,
-        {
-          width: window.innerWidth - controlContainerRef.current?.clientWidth,
-          height: window.innerHeight,
-        },
-      );
-      cubeOutlineRef.current = createCube(scene, camera);
+    const { scene, camera, renderer } = setupSceneAndCamera(
+      containerRef.current,
+      {
+        width:
+          window.innerWidth - (controlContainerRef.current?.clientWidth ?? 0),
+        height: window.innerHeight,
+      },
+    );
+    cubeOutlineRef.current = createCube(scene, camera);
 
-      const animate = () => {
-        renderer.render(scene, camera);
-      };
+    const animate = () => {
+      renderer.render(scene, camera);
+    };
 
-      renderer.setAnimationLoop(animate);
+    renderer.setAnimationLoop(animate);
 
-      const resize = () => {
-        const width =
-          window.innerWidth - (controlContainerRef.current?.clientWidth ?? 0);
-        const height = window.innerHeight;
-        renderer.setSize(width, height);
-      };
+    const resize = () => {
+      const width =
+        window.innerWidth - (controlContainerRef.current?.clientWidth ?? 0);
+      const height = window.innerHeight;
+      renderer.setSize(width, height);
+    };
 
-      window.addEventListener("resize", resize);
+    window.addEventListener("resize", resize);
 
-      return () => {
-        window.removeEventListener("resize", resize);
-      };
-    }
+    return () => {
+      window.removeEventListener("resize", resize);
+      renderer.setAnimationLoop(null);
+
+      // Hide previous canvas if component rerenders
+      renderer.domElement.style.display = "none";
+    };
   }, []);
 
   const controlHandlers = {

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 export const setupSceneAndCamera = (
-  container: HTMLDivElement,
+  container: HTMLDivElement | null,
   dimensions: { width: number; height: number },
 ) => {
   const scene = new THREE.Scene();
@@ -13,7 +13,7 @@ export const setupSceneAndCamera = (
   );
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(dimensions.width, dimensions.height);
-  container.appendChild(renderer.domElement);
+  container?.appendChild(renderer.domElement);
   renderer.render(scene, camera);
   return { scene, camera, renderer };
 };
