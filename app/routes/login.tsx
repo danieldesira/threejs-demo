@@ -3,6 +3,7 @@ import { Button } from "~/controls/button";
 import { TextInput } from "~/controls/text-input";
 import type { ActionFunctionArgs } from "react-router";
 import useAuthenticationStore from "~/store";
+import { toast } from "react-toastify";
 
 export const clientAction = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -16,6 +17,8 @@ export const clientAction = async ({ request }: ActionFunctionArgs) => {
       .getState()
       .setAuthModel({ token: "", userEmail: email ?? "" });
     return redirect("/");
+  } else {
+    toast.error("Login failed. Please check your email and password!");
   }
 };
 
