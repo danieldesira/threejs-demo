@@ -21,7 +21,7 @@ export const clientAction = async ({ request }: ActionFunctionArgs) => {
 
 export default function Login() {
   return (
-    <div className="flex flex-col items-center justify-center gap-5">
+    <div className="flex flex-col items-center justify-center gap-5 h-screen">
       <header className="text-2xl font-bold">Login</header>
       <Form method="post" action="" className="flex flex-col gap-2">
         <TextInput label="Email" id="email" type="email" />
