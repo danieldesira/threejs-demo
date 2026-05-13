@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import {
   cameraDistance,
   createCube,
+  moveCamera,
+  pointCameraAtOrigin,
   setupSceneAndCamera,
   type CubeOutlineValues,
 } from "./rendering";
 import { Dropdown } from "~/controls/dropdown";
 import * as THREE from "three";
 import { Button } from "~/controls/button";
-import { Slider } from "~/controls/slider";
+import { maxSliderValue, Slider } from "~/controls/slider";
 import { Checkbox } from "~/controls/checkbox";
 import useAuthenticationStore from "~/store";
 import { useNavigate } from "react-router";
@@ -17,7 +19,11 @@ export function Cube() {
   const containerRef = useRef<HTMLDivElement>(null);
   const controlContainerRef = useRef<HTMLDivElement>(null);
   const cubeOutlineRef = useRef<CubeOutlineValues>(null);
-  const [color, setColor] = useState("0x00ff00");
+  const [options, setOptions] = useState({
+    color: "0x00ff00",
+    cameraAngleX: 0,
+    cameraAngleY: 0,
+  });
   const navigate = useNavigate();
   const resetAuth = useAuthenticationStore((state) => state.reset);
 
@@ -56,16 +62,14 @@ export function Cube() {
     };
   }, []);
 
-  const pointCameraAtOrigin = () =>
-    cubeOutlineRef.current?.camera.lookAt(0, 0, 0);
-
-  const calculateCameraAngle = (value: number) => (value / 10) * Math.PI * 2;
+  const calculateCameraAngle = (value: number) =>
+    (value / maxSliderValue) * Math.PI * 2;
 
   const controlHandlers = {
     handleColorChange(option: string) {
       const cubeMaterial = cubeOutlineRef.current?.cube.material!;
       cubeMaterial.color.set(new THREE.Color(parseInt(option, 16)));
-      setColor(option);
+      setOptions({ ...options, color: option });
     },
     scaleX(value: number) {
       cubeOutlineRef.current?.cube.scale.setX(value);
@@ -84,7 +88,7 @@ export function Cube() {
       if (checked) {
         outlineMaterial.color.set(new THREE.Color(parseInt("0x000000", 16)));
       } else {
-        outlineMaterial.color.set(new THREE.Color(parseInt(color, 16)));
+        outlineMaterial.color.set(new THREE.Color(parseInt(options.color, 16)));
       }
     },
     logout() {
@@ -92,20 +96,28 @@ export function Cube() {
       navigate("/login");
     },
     moveCameraX(value: number) {
-      cubeOutlineRef.current?.camera.position.set(
-        Math.cos(calculateCameraAngle(value)) * cameraDistance,
-        0,
-        cameraDistance,
+      setOptions({
+        ...options,
+        cameraAngleX: calculateCameraAngle(value),
+      });
+      moveCamera(
+        cubeOutlineRef.current?.camera,
+        calculateCameraAngle(value),
+        options.cameraAngleY,
       );
-      pointCameraAtOrigin();
+      pointCameraAtOrigin(cubeOutlineRef.current?.camera);
     },
     moveCameraY(value: number) {
-      cubeOutlineRef.current?.camera.position.set(
-        0,
-        Math.sin(calculateCameraAngle(value)) * cameraDistance,
-        cameraDistance,
+      setOptions({
+        ...options,
+        cameraAngleY: calculateCameraAngle(value),
+      });
+      moveCamera(
+        cubeOutlineRef.current?.camera,
+        options.cameraAngleX,
+        calculateCameraAngle(value),
       );
-      pointCameraAtOrigin();
+      pointCameraAtOrigin(cubeOutlineRef.current?.camera);
     },
   };
 

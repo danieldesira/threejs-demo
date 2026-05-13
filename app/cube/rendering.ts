@@ -41,3 +41,19 @@ export const createCube = (
 };
 
 export type CubeOutlineValues = ReturnType<typeof createCube>;
+
+export const pointCameraAtOrigin = (
+  camera: THREE.PerspectiveCamera | undefined,
+) => camera?.lookAt(0, 0, 0);
+
+export const moveCamera = (
+  camera: THREE.PerspectiveCamera | undefined,
+  angleX: number,
+  angleY: number,
+) => {
+  camera?.position.set(
+    Math.cos(angleX) * cameraDistance,
+    Math.sin(angleY) * cameraDistance,
+    cameraDistance,
+  );
+};

@@ -14,10 +14,12 @@ export function Slider({ label, id, onChange }: Props) {
         className="py-2 px-4"
         type="range"
         min="1"
-        max="10"
+        max={maxSliderValue}
         defaultValue={1}
         onChange={(e) => onChange(parseInt(e.currentTarget.value))}
       />
     </InputField>
   );
 }
+
+export const maxSliderValue = 10;
